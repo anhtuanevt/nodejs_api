@@ -4,7 +4,7 @@ class ItemController {
 
     static getItem = async (req, res, next) => {
         const { id } = req.params;
-        const items = id ? await ItemService.getItem(id) : await ItemService.getAllItems();
+        const items = id ? await ItemService.getItem(id) : await ItemService.getAllItems(req.query);
         
         res.send({
             message: 'success',

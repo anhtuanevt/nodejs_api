@@ -4,12 +4,18 @@ const slugify = require('slugify');
 
 const { AuthError } = require('../core/error.response')
 const ItemModel = require('../databases/item/item.model'); 
+const { formatSelectToArray } = require('../helper');
 const statusEnumValues = ItemModel.schema.path('status').enumValues;
 
 class UserService {
     
-    static getAllItems = async () =>{
-        const items = await ItemModel.find({});
+    static getAllItems = async ({ select }) => {
+        const items = await ItemModel.find({})
+            .sort()
+            .skip()
+            .limit()
+            .select(formatSelectToArray(select))
+            .lean()
         return items;
     }
 
