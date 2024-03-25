@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose');
 
-const COLLECTION_NAME = 'students'
+const COLLECTION_NAME = 'author'
 
-const studentSchema = new Schema({
+const authorSchema = new Schema({
     name: {
         type: String
     },
@@ -19,24 +19,13 @@ const studentSchema = new Schema({
             message: props => `${props.value} is not a valid email!`
         },
     },
-    major: {
-        type: String,
-    },
-    title: {
-        type: String,
-        enum: ['quan li', 'hoc sinh'],
-        default: 'hoc sinh',
-    },
-    number_of_reports: {
-        type: Number,  
-    },
-    subject: {
-        type: Schema.Types.ObjectId,
-        ref: 'subjects'
-    }
-    
+    book: [
+            {
+            type: Schema.Types.ObjectId,
+            ref: 'books'
+        } ]
 }, { timestamps: true });
 
-module.exports = model(COLLECTION_NAME, studentSchema)
+module.exports = model(COLLECTION_NAME, authorSchema)
  
 

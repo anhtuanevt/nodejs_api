@@ -8,6 +8,13 @@ class StudentController {
         })
     }
 
+    static getStudent = async(req, res, next) => {
+        res.send({
+            message: 'success',
+            metadata: await StudentService.getStudent(req.params)
+        })
+    }
+
     static addStudent = async(req, res, next) => {
         res.send({
             message: 'success',
@@ -18,7 +25,14 @@ class StudentController {
     static updateStudent = async (req, res, next) => {
         res.send({
             message: 'success',
-            metadata: await StudentService.updateStudent(req.params)
+            metadata: await StudentService.updateStudent(req.params, req.body)
+        })
+    }
+
+    static deleteStudent = async (req, res, next) => {
+        res.send({
+            message: 'success',
+            metadata: await StudentService.deleteStudent(req.params)
         })
     }
 }

@@ -4,7 +4,6 @@ const express = require('express');
 const router = express.Router();
 
 router.use('/student', require('./student' ))
-router.use('/subject', require('./subject' ))
-
+router.use('/book', require('./book' ))
 
 module.exports = router;

@@ -6,7 +6,9 @@ const StudentController = require('../../controllers/student.controller');
 const router = express.Router();
 
 router.get('/', asyncHandle(StudentController.getAllStudent))
-router.post('/add', asyncHandle(StudentController.addStudent))
-router.patch('/update', asyncHandle(StudentController.updateStudent))
+router.get('/:id', asyncHandle(StudentController.getStudent))
+router.post('/', asyncHandle(StudentController.addStudent))
+router.put('/:id', asyncHandle(StudentController.updateStudent))
+router.delete('/:id', asyncHandle(StudentController.deleteStudent))
 
 module.exports = router
