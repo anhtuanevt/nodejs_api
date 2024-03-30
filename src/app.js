@@ -4,7 +4,10 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const compression = require('compression')
 
-require('./v2/databases/init.mongodb')
+require('dotenv').config();
+const app_v = process.env.APP_HOST
+
+require(`./${app_v}/databases/init.mongodb`)
 
 //user middleware
 // app.use(helmet())
@@ -20,7 +23,7 @@ app.use(express.urlencoded({
 }))
 
 //router
-app.use(require('./v2/routes/index.router'))
+app.use(require(`./${app_v}/routes/index.router`))
 
 // Error Handling Middleware called
 
