@@ -1,12 +1,6 @@
 const authService = require("../services/auth.service")
 
 class authController {
-    static createRole = async (req, res, next) => {
-        res.send({
-            message: 'success',
-            metadata: await authService.createRole(req.body)
-        })
-    }
 
     static register = async (req, res, next) => {
         res.send({
@@ -21,6 +15,21 @@ class authController {
             metadata: await authService.login(req.body)
         })
     }
+
+    static resetPassword = async (req, res, next) => {
+        res.send({
+            message: 'success',
+            metadata: await authService.resetPassword(req.body)
+        })
+    }
+
+    static resetPasswordWithToken = async (req, res, next) => {
+        res.send({
+            message: 'success',
+            metadata: await authService.resetPasswordWithToken(req.params, req.body)
+        })
+    }
+    
 }
 module.exports = {
     authController

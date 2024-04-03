@@ -1,20 +1,19 @@
 const userModel = require("../model/user.model")
 const { AuthError } = require('../core/error.response')
 const bcrypt = require('bcrypt');
+const crypto    = require('node:crypto')
 
 const saltRounds = 10;
 var jwt = require('jsonwebtoken');
 
 const group_roleModel = require("../model/group_role");
 const tokenModel = require("../model/token.model");
+const sendEmail = require('../helper/nodemailer')
 
 require('dotenv').config();
 
 class authService {
-    static createRole = async ({ name, users = []}) => {
-        return await group_roleModel.create({name, users})
-    }
-
+ 
     static register = async ({ username, password, email, role }) => {
         const findUser = await userModel.findOne({ username })
         if (findUser) throw new AuthError('user existed')
@@ -37,6 +36,39 @@ class authService {
         return {token}
     };
 
-    
+    static resetPassword = async ({ username }) => {
+        const findUser = await userModel.findOne({ username })
+        if (!findUser) throw new AuthError('user not existed')
+
+        let token = crypto.randomBytes(20).toString('hex');
+        let expiresAt = Date.now() + 1 * 60 * 1000
+        
+        await userModel.findByIdAndUpdate(findUser.id, {$set: {resetPassword: token, resetPasswordExpired: expiresAt}})
+        let link = `http://localhost:3000/reset-password/${token}`;
+        
+        sendEmail(link)
+
+        return 'success'
+    }
+
+    static resetPasswordWithToken = async ({ token }, { newPassword }) => {
+        const findUser = await userModel.findOne({
+            resetPassword: token,
+            resetPasswordExpired: {
+                $gt: Date.now()
+            }
+        })
+        if (!findUser) throw new AuthError('user not existed') 
+        let hashPassword = bcrypt.hashSync(newPassword, saltRounds)
+        await userModel.findByIdAndUpdate(
+            findUser.id, {
+                $set: {
+                    password: hashPassword,
+                    resetPassword: null,
+                    resetPasswordExpired: null
+                }
+            },{new: true})
+        return findUser
+    }
 }
 module.exports = authService

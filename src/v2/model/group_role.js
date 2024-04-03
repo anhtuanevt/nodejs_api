@@ -3,7 +3,7 @@ const { model, Schema } = require('mongoose')
 const COLLECTION_NAME = 'group_role'
 
 const roleSchema = new Schema({
-    name: {
+    role: {
         type: String,
         required: true
     },

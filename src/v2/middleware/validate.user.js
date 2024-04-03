@@ -16,7 +16,6 @@ const validateUser = async (req, res, next) => {
    } catch (error) {
       return res.status(401).send({message : 'Unauthorized'})
    }
-  
 };
 
 module.exports = validateUser;

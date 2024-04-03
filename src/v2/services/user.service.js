@@ -1,6 +1,7 @@
 const group_roleModel = require('../model/group_role');
 const userModel = require('../model/user.model')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const { upload } = require('../utils/uploadHandle');
 const saltRounds   = 10;
 
 class UserService {
@@ -35,6 +36,19 @@ class UserService {
         return await userModel.findByIdAndDelete(id)
     }
 
+    static uploadPhoto = async (userId, file) => {
+        const user = await userModel.findById(userId)
+        if(!user) throw new Error('User not found')
+
+        return await userModel.findByIdAndUpdate(userId, {photos: file.filename}, {new:true})
+    }
+
+    static uploadPhotos = async (userId, files) => {
+        const user = await userModel.findById(userId)
+        if(!user) throw new Error('User not found')
+
+        return await userModel.findByIdAndUpdate(userId, {photos: files.map(file => file.filename)}, {new:true})
+    }
 }
 
 module.exports = UserService

@@ -1,7 +1,7 @@
 "use strict"
 
 const express = require('express');
-const { asyncHandle } = require('../../ultils/asyncHandle');
+const { asyncHandle } = require('../../utils/asyncHandle');
 const StudentController = require('../../controllers/student.controller');
 const router = express.Router();
 

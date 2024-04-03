@@ -21,10 +21,19 @@ const userSchema = new Schema({
             message: props => `${props.value} is not a valid email!`
         },
     },
+    photos: {
+        type: [String]
+    },
     role: {
         type: Schema.Types.ObjectId,
         ref: 'group_permissions'
-    }
+    }, 
+    resetPassword: {
+        type: String
+    },
+    resetPasswordExpired: {
+        type: Date
+    },
 }, { timestamps: true });
 
 module.exports = model(COLLECTION_NAME, userSchema)
