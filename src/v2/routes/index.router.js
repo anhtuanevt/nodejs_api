@@ -9,5 +9,6 @@ router.use('/book', require('./book' ))
 router.use('/user', require('./user' ))
 router.use('/permission', require('./permission'))
 router.use('/', require('./auth'))
+router.use('/rss', require('./rss'))
 
 module.exports = router;

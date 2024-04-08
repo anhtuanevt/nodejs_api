@@ -3,7 +3,7 @@ const userModel = require('../model/user.model')
 const bcrypt = require('bcrypt');
 const { upload } = require('../utils/uploadHandle');
 const saltRounds   = 10;
-
+const cloudinary = require('../config/cloudinary')
 class UserService {
     static updateUser = async ({ id }, updateUser, userId) => {     
         const user = await userModel.findById(id)
@@ -38,16 +38,35 @@ class UserService {
 
     static uploadPhoto = async (userId, file) => {
         const user = await userModel.findById(userId)
-        if(!user) throw new Error('User not found')
+        if (!user) throw new Error('User not found')
+        let result = await cloudinary.uploader.upload(file.path, {
+                folder: 'avatar',
+                public_id: '123'
+            }
+        )
+        await userModel.findByIdAndUpdate(userId, { avatar: result.url }, { new: true })
+        return {
+            img_avt_60x60: await cloudinary.url(
+                result.public_id, {
 
-        return await userModel.findByIdAndUpdate(userId, {photos: file.filename}, {new:true})
+                }
+            )
+        }
+        
     }
 
     static uploadPhotos = async (userId, files) => {
-        const user = await userModel.findById(userId)
-        if(!user) throw new Error('User not found')
+        // const user = await userModel.findById(userId)
+        // if (!user) throw new Error('User not found')
+        
+        // // lay for
+        // const data = await Promise.all(files.map(file => await cloudinary.uploader.upload(file.path, {
+        //         folder: 'avatar',
+        //     }
+        // )))
 
-        return await userModel.findByIdAndUpdate(userId, {photos: files.map(file => file.filename)}, {new:true})
+
+        // return await userModel.findByIdAndUpdate(userId,  }, {new:true})
     }
 }
 
