@@ -1,0 +1,1 @@
+{"time":"2024-04-14T03:04:35.147Z","item":{"code":"USD","symbol":"&#36;","rate":"63,158.383","description":"United States Dollar","rate_float":63158.3833}}
